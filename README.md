@@ -182,9 +182,12 @@ Thumbs.db
 ----
 
 
----
+<br>
+<br>
 
-📬 EMAIL-CLASSIFIER — English Version 🇬🇧
+# 📬 EMAIL-CLASSIFIER — English Version 🇬🇧
+
+
 An intelligent email classification system that identifies whether a message is Productive or Unproductive, and generates a professional, empathetic response. Ideal for support teams, message triage, or customer service.
 
 ---
