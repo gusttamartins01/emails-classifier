@@ -1,0 +1,16 @@
+# Arquivos de Variáveis de Ambiente (CHAVES SECRETAS!)
+.env
+
+# Diretório de dependências do Node
+node_modules/
+
+# Diretório de Ambiente Virtual do Python
+# (venv) é o nome comum que aparece no seu terminal
+venv/
+
+# Arquivos do VS Code (opcional, mas recomendado)
+.vscode/
+
+# Arquivos de log e cache
+*.log
+/build/

@@ -1,0 +1,185 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #353333, #1b1a1a);
+    color: #f0f0f0;
+    /* Alterações para rolagem e responsividade */
+    min-height: 100vh; /* Mantém a altura mínima da viewport */
+    padding-bottom: 50px; /* Adiciona espaço na parte inferior para rolagem */
+}
+
+.container {
+    background-color: #1e1e1e;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+    max-width: 600px;
+    width: 90%; /* Ajuste para ser mais flexível em largura */
+    /* Centralização usando margin auto */
+    margin: 50px auto; 
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 28px;
+    color: #ffffff;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #cccccc;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    resize: vertical; /* Permite redimensionamento vertical para melhor usabilidade */
+    background-color: #414040;
+    color: #ffffff;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #36739b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    margin-top: 5px; /* Adicionado margem para botões em coluna */
+}
+
+button:hover {
+    background: #334b7e;
+    transform: scale(1.01); /* Ajustado para 1.01 para ser mais sutil */
+}
+
+button.loading {
+    background: #555;
+    cursor: wait;
+    opacity: 0.7;
+}
+
+/* Estilos para agrupar os botões de resultado */
+.resultado-buttons {
+    display: flex;
+    gap: 10px; /* Espaçamento entre os botões */
+    margin-top: 15px;
+}
+
+/* Garante que os botões dentro do grupo ocupem metade do espaço em telas maiores */
+.resultado-buttons button {
+    flex: 1; 
+    margin: 0; 
+}
+
+#exportar-pdf {
+    background: #8b3d3d;
+}
+
+#exportar-pdf:hover {
+    background: #a84c4c;
+}
+
+#fechar-resultado {
+    background: #444444;
+}
+
+#fechar-resultado:hover {
+    background: #555555;
+}
+
+#resultado {
+    margin-top: 25px;
+    padding: 20px;
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    border: 1px solid #444;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+#resultado.error {
+    border: 1px solid #ff4d4d;
+    background-color: #2a1e1e;
+    color: #ffcccc;
+}
+
+#resultado h2 {
+    margin-top: 0;
+    font-size: 20px;
+    color: #ffffff;
+}
+
+#categoria {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #7dd87d;
+}
+
+#resposta, #email-original {
+    font-size: 15px;
+    line-height: 1.5;
+    /* Garante que o texto quebre linhas corretamente sem pre-wrap desnecessário */
+    white-space: pre-wrap; 
+    word-wrap: break-word; /* Garante que palavras longas quebrem */
+    margin-top: 10px;
+}
+
+#email-original {
+    font-size: 14px;
+    color: #dddddd;
+    margin-bottom: 10px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Media Query mais robusta para telas pequenas (ex: celulares) */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+        border-radius: 0; /* Remove bordas arredondadas para ocupar toda a largura */
+        width: 100%; /* Ocupa 100% da largura em telas pequenas */
+        margin: 0; /* Remove margem para ocupar toda a tela */
+        min-height: 100vh; /* Garante que o contêiner ocupe toda a altura */
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    textarea {
+        height: 120px;
+        font-size: 13px;
+    }
+
+    button {
+        font-size: 15px;
+    }
+
+    #resultado h2 {
+        font-size: 18px;
+    }
+
+    /* Empilha os botões de resultado em telas pequenas */
+    .resultado-buttons {
+        flex-direction: column;
+    }
+
+    .resultado-buttons button {
+        width: 100%;
+    }
+}
