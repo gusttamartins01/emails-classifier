@@ -50,7 +50,7 @@ textarea {
 button {
     width: 100%;
     padding: 12px;
-    background: #36739b;
+    background: #176ca5;
     color: white;
     border: none;
     border-radius: 8px;
@@ -61,7 +61,7 @@ button {
 }
 
 button:hover {
-    background: #334b7e;
+    background: #22355f;
     transform: scale(1.01); /* Ajustado para 1.01 para ser mais sutil */
 }
 
@@ -85,19 +85,19 @@ button.loading {
 }
 
 #exportar-pdf {
-    background: #8b3d3d;
+    background: #17bd25;
 }
 
 #exportar-pdf:hover {
-    background: #a84c4c;
+    background: #0c7915;
 }
 
 #fechar-resultado {
-    background: #444444;
+    background: #b10606;
 }
 
 #fechar-resultado:hover {
-    background: #555555;
+    background: #5f0404;
 }
 
 #resultado {
