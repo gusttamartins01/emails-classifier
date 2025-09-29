@@ -2,102 +2,86 @@ const form = document.getElementById('email-form');
 const resultado = document.getElementById('resultado');
 const categoria = document.getElementById('categoria');
 const resposta = document.getElementById('resposta');
-const emailOriginal = document.getElementById('email-original');
-const button = document.querySelector('button[type="submit"]');
-const exportarBtn = document.getElementById('exportar-pdf');
-const fecharBtn = document.getElementById('fechar-resultado'); // Novo elemento
+const fecharBtn = document.getElementById('fechar-resultado');
+const button = document.querySelector('.btn-submit');
+const fileDrop = document.getElementById('file-drop');
+const fileInput = document.getElementById('pdf-file');
+
+// Elemento para mostrar o nome do arquivo PDF
+const fileNameDisplay = document.createElement('p');
+fileNameDisplay.id = 'file-name-display';
+fileNameDisplay.style.color = '#ccc';
+fileNameDisplay.style.fontSize = '14px';
+fileNameDisplay.style.marginTop = '8px';
+fileDrop.appendChild(fileNameDisplay);
+
+// Efeito de destaque ao arrastar PDF
+fileDrop.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  fileDrop.style.borderColor = '#1e90ff';
+  fileDrop.style.background = '#333';
+});
+fileDrop.addEventListener('dragleave', () => {
+  fileDrop.style.borderColor = '#555';
+  fileDrop.style.background = '#2a2a2a';
+});
+
+// Atualiza o nome do arquivo quando selecionado
+fileInput.addEventListener('change', () => {
+  const file = fileInput.files[0];
+  if (file) {
+    fileNameDisplay.textContent = `Arquivo selecionado: ${file.name}`;
+  } else {
+    fileNameDisplay.textContent = '';
+  }
+});
 
 form.addEventListener('submit', async (e) => {
-    e.preventDefault(); 
+  e.preventDefault();
 
-    const text = document.getElementById('email-text').value.trim();
-    if (!text) return;
+  const text = document.getElementById('email-text').value.trim();
+  const file = fileInput.files[0];
 
-    const formData = new FormData();
-    formData.append('text', text);
+  if (!text && !file) {
+    alert("Por favor, cole um texto ou envie um PDF.");
+    return;
+  }
 
-    resultado.classList.remove('hidden');
-    
-    button.classList.add('loading');
-    button.disabled = true;
-    exportarBtn.classList.add('hidden');
-    resultado.classList.remove('error'); 
+  const formData = new FormData();
+  if (text) formData.append('text', text);
+  if (file) formData.append('file', file);
 
-    emailOriginal.textContent = text; 
-    categoria.textContent = 'Processando...';
-    resposta.textContent = 'Aguarde a resposta da IA.';
+  resultado.classList.remove('hidden');
+  button.classList.add('loading');
+  button.disabled = true;
 
-    try {
-        const response = await fetch('http://localhost:8000/process', {
-            method: 'POST',
-            body: formData
-        });
+  categoria.textContent = 'Processando...';
+  resposta.textContent = 'Aguarde a resposta da IA.';
 
-        const data = await response.json();
+  try {
+    const response = await fetch('http://localhost:8000/process', {
+      method: 'POST',
+      body: formData
+    });
 
-        if (!response.ok) {
-            const errorDetail = data.detail || 'Erro desconhecido do servidor.';
-            throw new Error(errorDetail);
-        }
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.detail || 'Erro desconhecido.');
 
-        categoria.textContent = data.categoria;
-        resposta.textContent = data.resposta;
-        exportarBtn.classList.remove('hidden');
+    categoria.textContent = data.categoria;
+    resposta.textContent = data.resposta;
 
-    } catch (error) {
-        console.error('Falha na classificação:', error);
+  } catch (error) {
+    categoria.textContent = '❌ Erro de Sistema';
+    resposta.textContent = error.message;
+  }
 
-        let errorMessage = 'Não foi possível conectar ao servidor. Verifique se o FastAPI está rodando.';
-        if (error.message && error.message !== 'Failed to fetch') {
-            errorMessage = `Erro ao processar: ${error.message}`;
-        }
-
-        categoria.textContent = '❌ Erro de Sistema';
-        resposta.textContent = errorMessage;
-        exportarBtn.classList.add('hidden');
-        resultado.classList.add('error'); 
-    }
-
-    button.classList.remove('loading');
-    button.disabled = false;
+  button.classList.remove('loading');
+  button.disabled = false;
 });
 
-// Lógica para Fechar a seção de resultados
 fecharBtn.addEventListener('click', () => {
-    resultado.classList.add('hidden');
-    // Opcional: Limpar o campo de texto ao fechar
-    document.getElementById('email-text').value = ''; 
-});
-
-exportarBtn.addEventListener('click', () => {
-    
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    const margin = 20;
-    let y = margin;
-    const maxWidth = 170;
-    const lineHeight = 10;
-    
-    doc.setFontSize(14);
-    doc.text("Classificação de Email", margin, y);
-    y += lineHeight * 2; 
-
-    doc.setFontSize(12);
-    doc.text("Email original:", margin, y);
-    y += lineHeight / 2;
-    // Opcional: Garante que a quebra de linha preserve a formatação original
-    const emailTextContent = emailOriginal.textContent.replace(/\n/g, ' '); 
-    const emailLines = doc.splitTextToSize(emailTextContent, maxWidth); 
-    doc.text(emailLines, margin, y);
-    y += emailLines.length * lineHeight + lineHeight; 
-
-    doc.text(`Categoria: ${categoria.textContent}`, margin, y);
-    y += lineHeight * 2; 
-
-    doc.text("Resposta sugerida:", margin, y);
-    y += lineHeight / 2;
-    const respostaLines = doc.splitTextToSize(resposta.textContent, maxWidth);
-    doc.text(respostaLines, margin, y);
-
-    doc.save("classificacao-email.pdf");
+  resultado.classList.add('hidden');
+  document.getElementById('email-text').value = '';
+  fileInput.value = '';
+  fileNameDisplay.textContent = '';
 });

@@ -1,37 +1,47 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Classificador de Emails 📩</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Classificador de Emails 📩</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1><i class="fas fa-envelope-open-text"></i> Sistema de Classificação de Emails</h1>
+  <div class="container">
+    <h1><i class="fas fa-envelope-open-text"></i> Classificador Inteligente de Emails</h1>
+    <p class="subtitle">Cole o conteúdo do email ou envie um PDF para classificar automaticamente.</p>
 
-        <form id="email-form">
-            <label for="email-text">Conteúdo do Email:</label>
-            <textarea id="email-text" placeholder="Cole o conteúdo do email aqui..." required></textarea>
-            <button type="submit"><i class="fas fa-magic"></i> Classificar</button>
-        </form>
+    <form id="email-form" class="card">
+      <label for="email-text" class="label">
+        <i class="fas fa-keyboard"></i> Conteúdo do Email
+      </label>
+      <textarea id="email-text" placeholder="Cole o conteúdo do email aqui..."></textarea>
 
-        <div id="resultado" class="hidden">    
-            <h2><i class="fas fa-check-circle"></i> Resultado</h2>
-            <p><i class="fas fa-tag"></i> <strong>Categoria:</strong> <span id="categoria"></span></p>
-            <p><i class="fas fa-envelope"></i> <strong>Email original:</strong></p>
-            <p id="email-original"></p>
-            <p><i class="fas fa-reply"></i> <strong>Resposta sugerida:</strong></p>
-            <p id="resposta"></p>
-            <div class="resultado-buttons">
-                <button id="exportar-pdf" class="hidden"><i class="fas fa-file-pdf"></i> Exportar PDF</button>
-                <button id="fechar-resultado" type="button"><i class="fas fa-times"></i> Fechar</button>
-            </div>
-        </div>
+      <div class="divider"><span>OU</span></div>
+
+      <div class="file-drop" id="file-drop">
+        <input type="file" id="pdf-file" accept=".pdf">
+        <i class="fas fa-file-pdf"></i>
+        <p>Arraste e solte o PDF aqui<br><span>ou clique para selecionar</span></p>
+      </div>
+
+      <button type="submit" class="btn-submit">
+        <i class="fas fa-magic"></i> Classificar
+      </button>
+    </form>
+
+    <div id="resultado" class="resultado hidden">
+      <h2><i class="fas fa-check-circle"></i> Resultado da Classificação</h2>
+      <p><strong>Categoria:</strong> <span id="categoria"></span></p>
+      <p><strong>Resposta sugerida:</strong></p>
+      <p id="resposta"></p>
+      <button id="fechar-resultado" type="button" class="btn-fechar">
+        <i class="fas fa-times"></i> Fechar
+      </button>
     </div>
+  </div>
 
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
