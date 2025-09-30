@@ -6,8 +6,6 @@ const fecharBtn = document.getElementById('fechar-resultado');
 const button = document.querySelector('.btn-submit');
 const fileDrop = document.getElementById('file-drop');
 const fileInput = document.getElementById('pdf-file');
-
-// Elemento para mostrar o nome do arquivo PDF
 const fileNameDisplay = document.createElement('p');
 fileNameDisplay.id = 'file-name-display';
 fileNameDisplay.style.color = '#ccc';
@@ -15,7 +13,6 @@ fileNameDisplay.style.fontSize = '14px';
 fileNameDisplay.style.marginTop = '8px';
 fileDrop.appendChild(fileNameDisplay);
 
-// Efeito de destaque ao arrastar PDF
 fileDrop.addEventListener('dragover', (e) => {
     e.preventDefault();
     fileDrop.style.borderColor = '#1e90ff';
@@ -26,7 +23,6 @@ fileDrop.addEventListener('dragleave', () => {
     fileDrop.style.background = '#2a2a2a';
 });
 
-// Atualiza o nome do arquivo quando selecionado
 fileInput.addEventListener('change', () => {
     const file = fileInput.files[0];
     if (file) {
@@ -59,13 +55,11 @@ form.addEventListener('submit', async (e) => {
     resposta.textContent = 'Aguarde a resposta da IA.';
 
     try {
-        // --- LINHA AJUSTADA AQUI ---
-        // Substituído 'http://localhost:8000' pela URL pública do Vercel.
+    
         const response = await fetch('https://emails-classifier-backend.vercel.app/process', {
             method: 'POST',
             body: formData
         });
-        // -------------------------
 
         const data = await response.json();
         if (!response.ok) throw new Error(data.detail || 'Erro desconhecido.');
@@ -75,7 +69,6 @@ form.addEventListener('submit', async (e) => {
 
     } catch (error) {
         categoria.textContent = '❌ Erro de Sistema';
-        // Se o erro for um problema de CORS ou rede, o objeto 'error' pode não ter a propriedade 'message'.
         resposta.textContent = `Falha na comunicação com o servidor: ${error.message || 'Verifique a conexão ou se a API está ativa.'}`;
     }
 
