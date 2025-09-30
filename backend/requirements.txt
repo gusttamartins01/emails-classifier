@@ -6,3 +6,4 @@ nltk
 transformers
 python-multipart 
 PyPDF2
+groq
