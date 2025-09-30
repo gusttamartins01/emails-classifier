@@ -246,6 +246,7 @@ nltk
 transformers
 python-multipart
 spacy
+groq
 ```
 
 ### Setup Instructions
