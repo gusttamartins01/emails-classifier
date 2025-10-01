@@ -12,7 +12,6 @@ fileNameDisplay.style.color = '#ccc';
 fileNameDisplay.style.fontSize = '14px';
 fileNameDisplay.style.marginTop = '8px';
 fileDrop.appendChild(fileNameDisplay);
-
 fileDrop.addEventListener('dragover', (e) => {
     e.preventDefault();
     fileDrop.style.borderColor = '#1e90ff';
@@ -21,6 +20,23 @@ fileDrop.addEventListener('dragover', (e) => {
 fileDrop.addEventListener('dragleave', () => {
     fileDrop.style.borderColor = '#555';
     fileDrop.style.background = '#2a2a2a';
+});
+fileDrop.addEventListener('drop', (e) => {
+    e.preventDefault();
+    fileDrop.style.borderColor = '#555';
+    fileDrop.style.background = '#2a2a2a';
+
+    const files = e.dataTransfer.files;
+    if (files.length) {
+        fileInput.files = files; 
+        const file = files[0];
+        if (file && file.name.endsWith(".pdf")) {
+            fileNameDisplay.textContent = `Arquivo selecionado: ${file.name}`;
+        } else {
+            fileInput.value = '';
+            fileNameDisplay.textContent = 'Apenas arquivos PDF são aceitos.';
+        }
+    }
 });
 
 fileInput.addEventListener('change', () => {
@@ -55,14 +71,23 @@ form.addEventListener('submit', async (e) => {
     resposta.textContent = 'Aguarde a resposta da IA.';
 
     try {
-    
-        const response = await fetch('https://emails-classifier-backend.vercel.app/process', {
+        const PROD_URL = 'https://emails-classifier-backend.vercel.app/process';
+        const DEV_URL = 'http://127.0.0.1:8000/process';
+        
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const API_URL = isLocalhost ? DEV_URL : PROD_URL;
+        
+        const response = await fetch(API_URL, {
             method: 'POST',
             body: formData
         });
 
         const data = await response.json();
-        if (!response.ok) throw new Error(data.detail || 'Erro desconhecido.');
+
+        if (!response.ok) {
+            const errorMessage = data.detail || data.resposta || 'Erro desconhecido.';
+            throw new Error(errorMessage);
+        }
 
         categoria.textContent = data.categoria;
         resposta.textContent = data.resposta;
@@ -79,6 +104,6 @@ form.addEventListener('submit', async (e) => {
 fecharBtn.addEventListener('click', () => {
     resultado.classList.add('hidden');
     document.getElementById('email-text').value = '';
-    fileInput.value = '';
-    fileNameDisplay.textContent = '';
+    fileInput.value = ''; 
+    fileNameDisplay.textContent = ''; 
 });
